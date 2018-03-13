@@ -3,12 +3,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-#
-#  IAM role notes:
-#  aws_instance_profile <- iam_role <-
-#
-#
-#
 resource "aws_iam_instance_profile" "cloudwatch_agent_server_profile" {
   name = "tf_CloudWatchAgentServerProfile"
   role = "${aws_iam_role.cloudwatch_agent_server_role.name}"
