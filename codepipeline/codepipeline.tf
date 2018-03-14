@@ -1,7 +1,9 @@
+// choose our region
 provider "aws" {
   region = "us-east-1"
 }
 
+// define s3 remote state
 terraform {
   backend "s3" {
     bucket = "chlmes.terraform"
@@ -35,7 +37,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
-  name = "codepipeline_policy"
+  name = "tf_CodePipelinePolicy"
   role = "${aws_iam_role.codepipeline_role.id}"
 
   policy = <<EOF
@@ -45,6 +47,7 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
+        "s3:PutObject",
         "s3:GetObject",
         "s3:GetObjectVersion",
         "s3:GetBucketVersioning"
@@ -66,7 +69,9 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
       "Effect":"Allow",
       "Action": [
         "codecommit:GetBranch",
-        "codecommit:GetCommit"
+        "codecommit:GetCommit",
+        "codecommit:UploadArchive",
+        "codecommit:GetUploadArchiveStatus"
       ],
       "Resource": "arn:aws:codecommit:us-east-1:487312177614:AMIDefinitions"
     }
