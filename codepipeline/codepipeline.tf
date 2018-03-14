@@ -65,7 +65,8 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
-        "codecommit:GetBranch"
+        "codecommit:GetBranch",
+        "codecommit:GetCommit"
       ],
       "Resource": "arn:aws:codecommit:us-east-1:487312177614:AMIDefinitions"
     }
