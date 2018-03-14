@@ -1,5 +1,5 @@
 resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-role"
+  name = "tf_CodeBuildRole"
 
   assume_role_policy = <<EOF
 {
@@ -18,7 +18,7 @@ EOF
 }
 
 resource "aws_iam_policy" "codebuild_policy" {
-  name        = "codebuild-policy"
+  name        = "tf_CodeBuildPolicy"
   path        = "/service-role/"
   description = "Policy used in trust relationship with CodeBuild"
 
