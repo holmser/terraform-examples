@@ -61,6 +61,13 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         "codebuild:StartBuild"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
+        "codecommit:GetBranch"
+      ],
+      "Resource": "arn:aws:codecommit:us-east-1:487312177614:AMIDefinitions"
     }
   ]
 }
@@ -71,8 +78,8 @@ EOF
 #   name = "alias/myKmsKey"
 # }
 
-resource "aws_codepipeline" "foo" {
-  name     = "tf-test-pipeline"
+resource "aws_codepipeline" "ami_builder" {
+  name     = "AMIBuilder"
   role_arn = "${aws_iam_role.codepipeline_role.arn}"
 
   artifact_store {
@@ -91,15 +98,15 @@ resource "aws_codepipeline" "foo" {
     action {
       name             = "Source"
       category         = "Source"
-      owner            = "ThirdParty"
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "CodeCommit"
       version          = "1"
-      output_artifacts = ["test"]
+      output_artifacts = ["MyApp"]
 
       configuration {
-        Owner  = "my-organization"
-        Repo   = "test"
-        Branch = "master"
+        BranchName           = "master"
+        PollForSourceChanges = "false"
+        RepositoryName       = "AMIDefinitions"
       }
     }
   }
@@ -108,16 +115,44 @@ resource "aws_codepipeline" "foo" {
     name = "Build"
 
     action {
-      name            = "Build"
-      category        = "Build"
-      owner           = "AWS"
-      provider        = "CodeBuild"
-      input_artifacts = ["test"]
+      name     = "CodeBuild"
+      category = "Build"
+      owner    = "AWS"
+      provider = "CodeBuild"
+
+      input_artifacts = ["MyApp"]
       version         = "1"
 
+      # output_artifacts = ["MyAppBuild"]
+
       configuration {
-        ProjectName = "test"
+        ProjectName = "AMI_Builder"
       }
     }
   }
+}
+
+// CloudWatch Event Rules
+
+resource "aws_cloudwatch_event_rule" "code_pipeline" {
+  # id          = "CodePipeLine"
+  name        = "CodePipeline"
+  description = "Notify of CodePipeline events"
+
+  event_pattern = <<PATTERN
+  {
+    "detail-type": [
+      "CodePipeline Stage Execution State Change"],
+    "source":[
+    "aws.codepipeline"
+    ]
+  }
+  PATTERN
+}
+
+//SNS notification
+
+resource "aws_sns_topic" "code_pipeline" {
+  name         = "PipelineNotificationTopic"
+  display_name = "CodePipe"
 }
