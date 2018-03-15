@@ -11,7 +11,7 @@ terraform {
 }
 
 variable "repos" {
-  default = ["terraform"]
+  default = ["terraform", "go-codecommit"]
 }
 
 resource "aws_codecommit_repository" "terraform" {
