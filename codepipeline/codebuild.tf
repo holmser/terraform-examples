@@ -19,3 +19,7 @@ resource "aws_codebuild_project" "ami_builder" {
     location = "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/AMIDefinitions"
   }
 }
+
+output {
+    
+}

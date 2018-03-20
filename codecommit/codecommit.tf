@@ -19,10 +19,10 @@ resource "aws_codecommit_repository" "terraform" {
   repository_name = "${var.repos[count.index]}"
 }
 
-output "address" {
+output "http" {
   value = "${aws_codecommit_repository.terraform.*.clone_url_http}"
 }
 
-output "test" {
-  value = "${length(var.repos)}"
+output "ssh" {
+  value = "${aws_codecommit_repository.terraform.*.clone_url_ssh}"
 }
