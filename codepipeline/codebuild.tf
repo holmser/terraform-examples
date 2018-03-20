@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.10.0, <0.12.3"
+}
+
 resource "aws_codebuild_project" "ami_builder" {
   name          = "tf_AMIBuilder"
   description   = "Terraformed AMI Builder"
@@ -18,8 +22,4 @@ resource "aws_codebuild_project" "ami_builder" {
     type     = "CODECOMMIT"
     location = "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/AMIDefinitions"
   }
-}
-
-output {
-    
 }
