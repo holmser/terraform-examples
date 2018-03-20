@@ -1,6 +1,6 @@
 # Terraform Examples
 
-This repo is full of terraform template examples for different AWS services.  Some may be incomplete or broken.  Always run a `terraform plan`, and use at your own risk.  
+This repo is full of terraform template examples for different AWS services.  Some may be incomplete or broken.  Always run a `terraform plan`. **Use at your own risk.**  
 
 ## Getting Started
 I highly recommend using [tfenv](https://github.com/kamatama41/tfenv).  It allows you to define a `.terraform-version` file in your repo, and the correct version of terraform will automatically be used to run the template.
