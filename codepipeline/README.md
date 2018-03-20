@@ -12,4 +12,4 @@ CodeCommit is similar to Git(Hub|Lab).
 Similar to Jenkins.  Has a Jenkins plugin to create build slaves on demand.  
 
 ### CodeDeploy
-Self explanitory.  Used to build the code.
+Self explanitory.  Used to deploy the code.
